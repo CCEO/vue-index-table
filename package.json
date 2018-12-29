@@ -1,0 +1,24 @@
+{
+  "name": "vue-index-table",
+  "version": "1.0.0",
+  "description": "Index table for Vue.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CCEO/vue-index-table.git"
+  },
+  "keywords": [
+    "index",
+    "table",
+    "vuejs"
+  ],
+  "author": "Karla Ruan and Luis Alcaras",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CCEO/vue-index-table/issues"
+  },
+  "homepage": "https://github.com/CCEO/vue-index-table#readme"
+}
