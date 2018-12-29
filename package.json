@@ -1,0 +1,29 @@
+{
+  "name": "vue-index-table",
+  "version": "1.0.0",
+  "description": "Index table for @vuejs.",
+  "main": "src/index.js",
+  "dependencies": {
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "vuejs": "^3.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CCEO/vue-index-table.git"
+  },
+  "keywords": [
+    "vuejs",
+    "table",
+    "bootstrap"
+  ],
+  "author": "Luis Alcaras",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CCEO/vue-index-table/issues"
+  },
+  "homepage": "https://github.com/CCEO/vue-index-table#readme"
+}
