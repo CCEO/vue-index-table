@@ -1,14 +1,23 @@
-import Index from './Index';
+import Index from './Index.vue';
 
-const vueIndexTable = {
-    install(Vue, options) {
-        Vue.component('alv-form', Index);
-        Vue.mixin({
-            mounted() {
-                console.log('ALV is running!!!!');
-            }
-        });
-    }
+export function install(Vue) {
+    if (install.installed) return;
+    install.installed = true;
+    Vue.component('IndexTable', Index);
+}
+
+const plugin = {
+    install,
 };
 
-export default vueIndexTable;
+let GlobalVue = null;
+if (typeof window !== 'undefined') {
+    GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+    GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+    GlobalVue.use(plugin);
+}
+
+export default Index;

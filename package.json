@@ -1,15 +1,25 @@
 {
   "name": "vue-index-table",
   "version": "1.0.0",
-  "description": "Index table for @vuejs.",
-  "main": "src/index.js",
-  "dependencies": {
-    "bootstrap-vue": "^2.0.0-rc.11",
-    "vuejs": "^3.0.1"
+  "description": "Index table for Vue.",
+  "main": "dist/vue-index-table.umd.js",
+  "module": "dist/vue-index-table.esm.js",
+  "unpkg": "dist/vue-index-table.min.js",
+  "browser": {
+    "./sfc": "src/Index.vue"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build:umd & npm run build:es & npm run build:unpkg",
+    "build:umd": "rollup --config build/rollup.config.js --format umd --file dist/vue-index-table.umd.js",
+    "build:es": "rollup --config build/rollup.config.js --format es --file dist/vue-index-table.esm.js",
+    "build:unpkg": "rollup --config build/rollup.config.js --format iife --file dist/vue-index-table.min.js"
+  },
+  "devDependencies": {
+    "rollup": "^0.57.1",
+    "rollup-plugin-buble": "^0.19.2",
+    "rollup-plugin-vue": "^3.0.0",
+    "vue": "^2.5.16",
+    "vue-template-compiler": "^2.5.16"
   },
   "repository": {
     "type": "git",
