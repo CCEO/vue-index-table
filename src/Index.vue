@@ -43,7 +43,6 @@
             columns: {type: Array},
             buttons: {type: Array}
         },
-        components: {Widget},
         data() {
             return {
                 options: {
