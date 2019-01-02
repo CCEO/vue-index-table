@@ -1,6 +1,6 @@
 {
   "name": "vue-index-table",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Index table for Vue.",
   "main": "dist/vue-index-table.umd.js",
   "module": "dist/vue-index-table.esm.js",
