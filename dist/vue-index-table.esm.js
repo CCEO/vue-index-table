@@ -43,7 +43,6 @@ var Index = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
         columns: {type: Array},
         buttons: {type: Array}
     },
-    components: {Widget: Widget},
     data: function data() {
         return {
             options: {

@@ -49,7 +49,6 @@
             columns: {type: Array},
             buttons: {type: Array}
         },
-        components: {Widget: Widget},
         data: function data() {
             return {
                 options: {
