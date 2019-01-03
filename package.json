@@ -1,5 +1,5 @@
 {
-  "name": "vue-index-table",
+  "name": "@cceo/vue-index-table",
   "version": "1.0.4",
   "description": "Index table for Vue.",
   "main": "dist/vue-index-table.umd.js",
