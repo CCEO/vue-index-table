@@ -1,18 +1,21 @@
 <template>
     <div class="dynamic-tables">
         <b-breadcrumb>
-            <b-breadcrumb-item>
-                <a :href="homeURL">
-                    <i class="fa fa-home"></i>
+            <b-breadcrumb-item v-for="breadcrumb in breadcrumbs">
+                <a :href="breadcrumb.url">
+                    <i :class="breadcrumb.icon"></i>{{ breadcrumb.icon ? " " : "" }}{{ breadcrumb.text }}
                 </a>
             </b-breadcrumb-item>
-            <b-breadcrumb-item active>{{ title }}</b-breadcrumb-item>
         </b-breadcrumb>
         <h2 class="page-title">{{ title }}</h2>
         <b-card :title="subtitle" collapse close customHeader>
-            <b-button variant="primary" class="btn-rounded-f width-100 mb-xs mr-xs pull-right" :href="addButton.URL">
-                {{ addButton.title }}
-            </b-button>
+            <b-button-group class="pull-right float-right">
+                <b-button v-for="button in toolbar" :variant="button.variant"
+                          class="btn-rounded-f width-100 mb-xs mr-xs" :href="button.url"
+                          @click="button.tap">
+                    <i v-if="button.icon" :class="button.icon"></i>{{ button.icon ? " " : "" }}{{ button.text }}
+                </b-button>
+            </b-button-group>
             <v-client-table :data="data" :columns="columns" :options="options">
                 <div slot="actions" slot-scope="props">
                     <b-button-group size="sm">
@@ -36,9 +39,9 @@
         name: "Index",
         props: {
             title: {type: String},
-            homeURL: {type: String},
+            breadcrumbs: {type: Array},
             subtitle: {type: String},
-            addButton: {type: Object},
+            toolbar: {type: Array},
             data: {type: Array},
             columns: {type: Array},
             buttons: {type: Array}

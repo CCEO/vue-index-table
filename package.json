@@ -35,5 +35,8 @@
   "bugs": {
     "url": "https://github.com/CCEO/vue-index-table/issues"
   },
-  "homepage": "https://github.com/CCEO/vue-index-table#readme"
+  "homepage": "https://github.com/CCEO/vue-index-table#readme",
+  "dependencies": {
+    "rollup-plugin-node-resolve": "^4.0.0"
+  }
 }
