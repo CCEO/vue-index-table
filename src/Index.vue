@@ -8,20 +8,22 @@
             </b-breadcrumb-item>
         </b-breadcrumb>
         <h2 class="page-title">{{ title }}</h2>
-        <b-card :title="subtitle" :class=" hasCard ? '' : 'no-card' " collapse close customHeader>
-            <b-button-group class="pull-right float-right">
+        <b-card :title="subtitle" :class="{ 'no-card': hasCard }" collapse close customHeader>
+            <b-button-group class="pull-right float-righ:wt">
                 <b-button v-for="button in toolbar" :variant="button.variant"
-                          class="btn-rounded-f width-100 mb-xs mr-xs" :href="button.url" @click="button.tap">
+                          class="btn-rounded-f width-100 mb-xs mr-xs btn-rounded"
+                          :href="button.url" @click="button.tap">
                     <i v-if="button.icon" :class="button.icon"></i>{{ button.icon ? " " : "" }}{{ button.text }}
                 </b-button>
             </b-button-group>
             <v-client-table :data="data" :columns="columns" :options="settings">
                 <div :slot="actionsColumn" slot-scope="props">
-                    <b-button-group size="sm">
-                        <b-button class="btn-rounded-f pull-right" v-for="button in buttons"
+                    <b-button-group size="sm" class="m-auto">
+                        <b-button class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons"
                                   v-if="button.exceptions ? button.exceptions.indexOf(props.row.id) < 0 : true"
                                   v-b-modal="button.name" :variant="button.variant"
-                                  :href="button.url.replace(':id', props.row.id)" @click="showModal(button)">
+                                  :href="button.url ? button.url.replace(':id', props.row.id) : '#'"
+                                  @click="showModal(button)">
                             <i :class="button.icon"></i>
                         </b-button>
                     </b-button-group>
@@ -38,16 +40,16 @@
     export default {
         name: "Index",
         props: {
-            title: {type: String},
-            breadcrumbs: {type: Array},
-            subtitle: {type: String},
-            toolbar: {type: Array},
-            data: {type: Array},
-            columns: {type: Array},
-            actionsColumn: {type: String},
-            buttons: {type: Array},
-            hasCard: {type: Boolean},
-            options: {type: Object}
+            title: {type: String, default: null},
+            breadcrumbs: {type: Array, default: null},
+            subtitle: {type: String, default: null},
+            toolbar: {type: Array, default: null},
+            data: {type: Array, default: null},
+            columns: {type: Array, default: null},
+            actionsColumn: {type: String, default: null},
+            buttons: {type: Array, default: null},
+            hasCard: {type: Boolean, default: null},
+            options: {type: Object, default: null}
         },
         data() {
             let defaultOptions = {
@@ -74,35 +76,30 @@
             console.log(options.pagination);
             return {
                 settings: options,
-                modal: {
-                    variant: 'primary',
-                    title: '',
-                    text: '',
-                    form: {
-                        method: '',
-                        url: ''
-                    }
-                }
+                modal: {}
             }
         },
         methods: {
             showModal(button) {
-                this.modal = {
-                    variant: button.variant,
-                    title: button.modal.title,
-                    text: button.modal.text,
-                    form: {
-                        method: button.method,
-                        url: button.URL
-                    }
-                };
-                this.$refs.modal.show();
+                console.log("Hi!");
+                if (button.modal) {
+                    this.modal = {
+                        variant: button.variant,
+                        title: button.modal.title,
+                        text: button.modal.text,
+                        form: {
+                            method: button.modal.method,
+                            url: button.modal.url
+                        }
+                    };
+                    this.$refs.modal.show();
+                }
             }
         }
     }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
     .no-card {
         border: 0;
         background-color: transparent;
