@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Index from './Index.vue';
 
 export function install(Vue) {
