@@ -9,7 +9,7 @@
         </b-breadcrumb>
         <h2 class="page-title">{{ title }}</h2>
         <b-card :title="subtitle" :class="{ 'no-card': hasCard }" collapse close customHeader>
-            <b-button-group class="pull-right float-righ:wt">
+            <b-button-group class="pull-right float-right">
                 <b-button v-for="button in toolbar" :variant="button.variant"
                           class="btn-rounded-f width-100 mb-xs mr-xs btn-rounded"
                           :href="button.url" @click="button.tap">
@@ -21,16 +21,19 @@
                     <b-button-group size="sm" class="m-auto">
                         <b-button class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons"
                                   v-if="button.exceptions ? button.exceptions.indexOf(props.row.id) < 0 : true"
-                                  v-b-modal="button.name" :variant="button.variant"
-                                  :href="button.url ? button.url.replace(':id', props.row.id) : '#'"
-                                  @click="showModal(button)">
+                                  v-b-modal="button.name" :variant="button.variant" @click="showModal(button, props.row.id)"
+                                  :href="button.url ? button.url.replace(':id', props.row.id) : null">
                             <i :class="button.icon"></i>
                         </b-button>
                     </b-button-group>
                 </div>
             </v-client-table>
-            <b-modal ref="modal" :id="modal.name" :variant="modal.variant" :title="modal.title" body-class="bg-white">
+            <b-modal ref="modal" :id="modal.name" :variant="modal.variant" :header-text-variant="modal.variant" :title="modal.title" body-class="bg-white">
                 {{ modal.text}}
+                <div slot="modal-footer" class="w-100">
+                    <b-btn class="float-right" :variant="modal.variant" @click="accept()">{{ this.modal.accept }}</b-btn>
+                    <b-btn class="float-right mr-1" @click="cancel()">{{ this.modal.cancel }}</b-btn>
+                </div>
             </b-modal>
         </b-card>
     </div>
@@ -71,17 +74,16 @@
                     is: 'fa-sort ml-1',
                 }
             };
-            let options = this.options ? Object.assign(this.options, defaultOptions) : defaultOptions;
+            let options = this.options ? Object.assign(defaultOptions, this.options) : defaultOptions;
 
-            console.log(options.pagination);
+            console.log(options);
             return {
                 settings: options,
                 modal: {}
             }
         },
         methods: {
-            showModal(button) {
-                console.log("Hi!");
+            showModal(button, id) {
                 if (button.modal) {
                     this.modal = {
                         variant: button.variant,
@@ -89,11 +91,27 @@
                         text: button.modal.text,
                         form: {
                             method: button.modal.method,
-                            url: button.modal.url
-                        }
+                            url: button.modal.url.replace(':id', id)
+                        },
+                        accept: button.modal.accept ? button.modal.accept : "Accept",
+                        cancel: button.modal.cancel ? button.modal.cancel : "Cancel"
                     };
                     this.$refs.modal.show();
                 }
+            },
+            cancel() {
+                this.$refs.modal.hide();
+            },
+            accept() {
+                axios({
+                    method: this.modal.form.method,
+                    url: this.modal.form.url,
+                }).then(() => {
+                    window.location.reload();
+                }).catch(err => {
+                    console.error(JSON.stringify(err));
+                });
+                this.$refs.modal.hide();
             }
         }
     }
