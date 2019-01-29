@@ -81,8 +81,7 @@
                     is: 'fa-sort ml-1',
                 }
             };
-            let options = this.options ? Object.assign(this.options, defaultOptions) : defaultOptions;
-
+            let options = this.options ? Object.assign(defaultOptions, this.options) : defaultOptions;
             return {
                 settings: options,
                 modal: {}
