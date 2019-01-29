@@ -1,6 +1,6 @@
 {
   "name": "@cceo/vue-index-table",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Index table for Vue.",
   "main": "dist/vue-index-table.umd.js",
   "module": "dist/vue-index-table.esm.js",
@@ -30,13 +30,14 @@
     "table",
     "bootstrap"
   ],
-  "author": "Luis Alcaras",
+  "author": "CCEO",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/CCEO/vue-index-table/issues"
   },
   "homepage": "https://github.com/CCEO/vue-index-table#readme",
   "dependencies": {
+    "node-sass": "^4.11.0",
     "rollup-plugin-node-resolve": "^4.0.0"
   }
 }

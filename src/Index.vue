@@ -1,7 +1,8 @@
 <template>
     <div class="dynamic-tables">
-        <b-breadcrumb v-if="typeof breadcrumbs !== 'undefined'">
-            <b-breadcrumb-item v-for="breadcrumb in breadcrumbs">
+
+        <b-breadcrumb v-if="breadcrumbs.length">
+            <b-breadcrumb-item v-for="breadcrumb in breadcrumbs" :key="breadcrumb.text">
                 <a :href="breadcrumb.url">
                     <i :class="breadcrumb.icon"></i>{{ breadcrumb.icon ? " " : "" }}{{ breadcrumb.text }}
                 </a>
@@ -10,7 +11,7 @@
         <h2 class="page-title">{{ title }}</h2>
         <b-card :title="subtitle" :class="{ 'no-card': hasCard }" collapse close customHeader>
             <b-button-group class="pull-right float-right">
-                <b-button v-for="button in toolbar" :variant="button.variant"
+                <b-button v-for="button in toolbar" :variant="button.variant" :key="button.text"
                           class="btn-rounded-f width-100 mb-xs mr-xs btn-rounded"
                           :href="button.url" @click="button.tap">
                     <i v-if="button.icon" :class="button.icon"></i>{{ button.icon ? " " : "" }}{{ button.text }}
@@ -18,20 +19,26 @@
             </b-button-group>
             <v-client-table :data="data" :columns="columns" :options="settings">
                 <div :slot="actionsColumn" slot-scope="props">
-                    <b-button-group size="sm" class="m-auto">
-                        <b-button class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons"
-                                  v-if="button.exceptions ? button.exceptions.indexOf(props.row.id) < 0 : true"
-                                  v-b-modal="button.name" :variant="button.variant" @click="showModal(button, props.row.id)"
-                                  :href="button.url ? button.url.replace(':id', props.row.id) : null">
+                    <slot v-if="buttons.length==0" name="buttons" :row="props.row" :id="props.row.id"
+                          :index="props.index"></slot>
+                    <b-button-group size="sm" class="m-auto" v-else>
+                        <b-button
+                                class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons" :key="button.text"
+                                v-if="button.visible==null || button.visible(props.row)"
+                                v-b-modal="button.name" :variant="button.variant"
+                                @click="showModal(button, props.row.id)"
+                                :href="button.url ? button.url.replace(':id', props.row.id) : null">
                             <i :class="button.icon"></i>
                         </b-button>
                     </b-button-group>
                 </div>
             </v-client-table>
-            <b-modal ref="modal" :id="modal.name" :variant="modal.variant" :header-text-variant="modal.variant" :title="modal.title" body-class="bg-white">
+            <b-modal ref="modal" :id="modal.name" :variant="modal.variant" :header-text-variant="modal.variant"
+                     :title="modal.title" body-class="bg-white">
                 {{ modal.text}}
                 <div slot="modal-footer" class="w-100">
-                    <b-btn class="float-right" :variant="modal.variant" @click="accept()">{{ this.modal.accept }}</b-btn>
+                    <b-btn class="float-right" :variant="modal.variant" @click="accept()">{{ this.modal.accept }}
+                    </b-btn>
                     <b-btn class="float-right mr-1" @click="cancel()">{{ this.modal.cancel }}</b-btn>
                 </div>
             </b-modal>
@@ -44,13 +51,13 @@
         name: "Index",
         props: {
             title: {type: String, default: null},
-            breadcrumbs: {type: Array, default: null},
+            breadcrumbs: {type: Array, default: () => []},
             subtitle: {type: String, default: null},
             toolbar: {type: Array, default: null},
             data: {type: Array, default: null},
             columns: {type: Array, default: null},
             actionsColumn: {type: String, default: null},
-            buttons: {type: Array, default: null},
+            buttons: {type: Array, default: () => []},
             hasCard: {type: Boolean, default: null},
             options: {type: Object, default: null}
         },
@@ -74,9 +81,8 @@
                     is: 'fa-sort ml-1',
                 }
             };
-            let options = this.options ? Object.assign(defaultOptions, this.options) : defaultOptions;
+            let options = this.options ? Object.assign(this.options, defaultOptions) : defaultOptions;
 
-            console.log(options);
             return {
                 settings: options,
                 modal: {}
@@ -89,6 +95,7 @@
                         variant: button.variant,
                         title: button.modal.title,
                         text: button.modal.text,
+                        id: id,
                         form: {
                             method: button.modal.method,
                             url: button.modal.url.replace(':id', id)
@@ -107,9 +114,10 @@
                     method: this.modal.form.method,
                     url: this.modal.form.url,
                 }).then(() => {
-                    window.location.reload();
+                    let index = this.data.findIndex(row => row.id == this.modal.id);
+                    this.data.splice(index, 1);
                 }).catch(err => {
-                    console.error(JSON.stringify(err));
+                    console.error(err);
                 });
                 this.$refs.modal.hide();
             }

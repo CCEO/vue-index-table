@@ -88,7 +88,8 @@ $ npm install @cceo/vue-index-table --save
                         icon: 'fa fa-pencil',
                         URL: 'fields/edit',
                         method: 'get',
-                        variant: 'primary'
+                        variant: 'primary',
+                        visible : (canchita) => canchita.isEditable
                     },
                     {
                         name: 'delete',
@@ -107,3 +108,11 @@ $ npm install @cceo/vue-index-table --save
     };
 </script>
 ```
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within this package, please send an e-mail to contacto@cceo.com.mx.
+
+## License
+
+This package is open-sourced software licensed under the MIT license.
