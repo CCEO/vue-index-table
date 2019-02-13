@@ -67,6 +67,7 @@
                 perPage: 5,
                 pagination: {
                     chunk: 5,
+                    dropdown: false,
                 },
                 texts: {
                     filter: '',

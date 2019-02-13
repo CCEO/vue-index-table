@@ -67,6 +67,7 @@ var Index = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_v
             perPage: 5,
             pagination: {
                 chunk: 5,
+                dropdown: false,
             },
             texts: {
                 filter: '',
