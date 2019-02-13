@@ -23,7 +23,8 @@
                           :index="props.index"></slot>
                     <b-button-group size="sm" class="m-auto" v-else>
                         <b-button
-                                class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons" :key="button.text"
+                                class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons"
+                                :key="button.text"
                                 v-if="button.visible==null || button.visible(props.row)"
                                 v-b-modal="button.name" :variant="button.variant"
                                 @click="showModal(button, props.row.id)"
@@ -66,7 +67,6 @@
                 perPage: 5,
                 pagination: {
                     chunk: 5,
-                    dropdown: false,
                 },
                 texts: {
                     filter: '',
@@ -81,9 +81,10 @@
                     is: 'fa-sort ml-1',
                 }
             };
-            let options = this.options ? Object.assign(defaultOptions, this.options) : defaultOptions;
+            if (this.options)
+                Object.assign(defaultOptions, this.options)
             return {
-                settings: options,
+                settings: defaultOptions,
                 modal: {}
             }
         },
