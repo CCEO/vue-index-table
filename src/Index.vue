@@ -1,6 +1,5 @@
 <template>
     <div class="dynamic-tables">
-
         <b-breadcrumb v-if="breadcrumbs.length">
             <b-breadcrumb-item v-for="breadcrumb in breadcrumbs" :key="breadcrumb.text">
                 <a :href="breadcrumb.url">
@@ -13,7 +12,7 @@
             <b-button-group class="pull-right float-right">
                 <b-button v-for="button in toolbar" :variant="button.variant" :key="button.text"
                           class="btn-rounded-f width-100 mb-xs mr-xs btn-rounded"
-                          :href="button.url" @click="button.tap">
+                          :href="button.url" @click="button.tap" v-if="button.visible==null || button.visible()">
                     <i v-if="button.icon" :class="button.icon"></i>{{ button.icon ? " " : "" }}{{ button.text }}
                 </b-button>
             </b-button-group>
