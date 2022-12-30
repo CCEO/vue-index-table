@@ -1,6 +1,6 @@
 {
   "name": "@cceo/vue-index-table",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "Index table for Vue.",
   "main": "dist/vue-index-table.umd.js",
   "module": "dist/vue-index-table.esm.js",
@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/CCEO/vue-index-table#readme",
   "dependencies": {
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.14.1",
     "rollup-plugin-node-resolve": "^4.0.0"
   }
 }
