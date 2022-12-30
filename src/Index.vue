@@ -1,48 +1,66 @@
 <template>
     <div class="dynamic-tables">
 
-        <b-breadcrumb v-if="breadcrumbs.length">
-            <b-breadcrumb-item v-for="breadcrumb in breadcrumbs" :key="breadcrumb.text">
-                <a :href="breadcrumb.url">
-                    <i :class="breadcrumb.icon"></i>{{ breadcrumb.icon ? " " : "" }}{{ breadcrumb.text }}
-                </a>
-            </b-breadcrumb-item>
-        </b-breadcrumb>
+        <nav aria-label="breadcrumb" v-if="breadcrumbs.length">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item" v-for="breadcrumb in breadcrumbs" :key="breadcrumb.text">
+                    <a :href="breadcrumb.url">
+                        <i :class="breadcrumb.icon"></i>{{ breadcrumb.icon ? " " : "" }}{{ breadcrumb.text }}
+                    </a>
+                </li>
+            </ol>
+        </nav>
         <h2 class="page-title">{{ title }}</h2>
-        <b-card :title="subtitle" :class="{ 'no-card': hasCard }" collapse close customHeader>
-            <b-button-group class="pull-right float-right">
-                <b-button v-for="button in toolbar" :variant="button.variant" :key="button.text"
-                          class="btn-rounded-f width-100 mb-xs mr-xs btn-rounded"
-                          :href="button.url" @click="button.tap">
-                    <i v-if="button.icon" :class="button.icon"></i>{{ button.icon ? " " : "" }}{{ button.text }}
-                </b-button>
-            </b-button-group>
-            <v-client-table :data="data" :columns="columns" :options="settings">
-                <div :slot="actionsColumn" slot-scope="props">
-                    <slot v-if="buttons.length==0" name="buttons" :row="props.row" :id="props.row.id"
-                          :index="props.index"></slot>
-                    <b-button-group size="sm" class="m-auto" v-else>
-                        <b-button
-                                class="btn-rounded-f pull-right btn-rounded" v-for="button in buttons" :key="button.text"
-                                v-if="button.visible==null || button.visible(props.row)"
-                                v-b-modal="button.name" :variant="button.variant"
-                                @click="showModal(button, props.row.id)"
-                                :href="button.url ? button.url.replace(':id', props.row.id) : null">
-                            <i :class="button.icon"></i>
-                        </b-button>
-                    </b-button-group>
+        <div class="card" :class="{ 'no-card': hasCard }" >
+            <div class="card-body">
+                <h5 class="card-title">{{ subtitle }}</h5>
+
+                <div class="btn-group pull-right float-right">
+                    <a class="btn" v-for="button in toolbar" :class="'btn-'+button.variant" :key="button.text"
+                              class="btn-rounded-f width-100 mb-xs mr-xs btn-rounded"
+                              :href="button.url" @click="button.tap">
+                        <i v-if="button.icon" :class="button.icon"></i>{{ button.icon ? " " : "" }}{{ button.text }}
+                    </a>
                 </div>
-            </v-client-table>
-            <b-modal ref="modal" :id="modal.name" :variant="modal.variant" :header-text-variant="modal.variant"
-                     :title="modal.title" body-class="bg-white">
-                {{ modal.text}}
-                <div slot="modal-footer" class="w-100">
-                    <b-btn class="float-right" :variant="modal.variant" @click="accept()">{{ this.modal.accept }}
-                    </b-btn>
-                    <b-btn class="float-right mr-1" @click="cancel()">{{ this.modal.cancel }}</b-btn>
+                <v-client-table :data="data" :columns="columns" :options="settings">
+                    <div :slot="actionsColumn" slot-scope="props">
+                        <slot v-if="buttons.length==0" name="buttons" :row="props.row" :id="props.row.id"
+                              :index="props.index"></slot>
+                        <div class="btn-group m-auto" v-else>
+                            <a
+                                    class="btn btn-rounded-f pull-right btn-rounded btn-sm" v-for="button in buttons" :key="button.text"
+                                    v-if="button.visible==null || button.visible(props.row)"
+                                    data-toggle="modal" :data-target="'#'+button.name" :class="'btn-'+button.variant"
+                                    @click="showModal(button, props.row.id)"
+                                    :href="button.url ? button.url.replace(':id', props.row.id) : null">
+                                <i :class="button.icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </v-client-table>
+                <div class="modal fade" ref="modal" :id="modal.name">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{ modal.title }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" class="bg-white">
+                                {{ modal.text}}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn float-right" :class="'btn-'+modal.variant" @click="accept()">
+                                    {{ this.modal.accept }}
+                                </button>
+                                <button class="btn float-right mr-1" @click="cancel()">{{ this.modal.cancel }}</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </b-modal>
-        </b-card>
+            </div>
+        </div>
     </div>
 </template>
 
